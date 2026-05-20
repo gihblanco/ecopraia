@@ -1,5 +1,9 @@
 package com.project.ecopraia.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +26,10 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "usuario")
+    private List<Historico> historicos;
 
     public Long getId() {
         return id;
@@ -52,5 +61,13 @@ public class Usuario {
 
     public void setSenha(String senha){
         this.senha = senha;
+    }
+
+    public List<Historico> getHistoricos() {
+        return historicos;
+    }
+
+    public void setHistoricos(List<Historico> historicos) {
+        this.historicos = historicos;
     }
 }

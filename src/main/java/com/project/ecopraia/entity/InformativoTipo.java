@@ -1,10 +1,15 @@
 package com.project.ecopraia.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,6 +27,10 @@ public class InformativoTipo {
     private String informativo;
 
     private String cor;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "informativoTipo")
+    private List<Lixeira> lixeiras;
 
     public Long getId() {
         return id;
@@ -53,5 +62,13 @@ public class InformativoTipo {
     
     public void setCor(String cor){
         this.cor = cor;
+    }
+
+    public List<Lixeira> getLixeiras() {
+        return lixeiras;
+    }
+
+    public void setLixeiras(List<Lixeira> lixeiras) {
+        this.lixeiras = lixeiras;
     }
 }
