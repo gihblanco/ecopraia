@@ -17,6 +17,11 @@ public class InformativoTipoService {
         this.informativoTipoRepository = informativoTipoRepository;
     }
 
+    public InformativoTipo buscarPorId(Long id) {
+        return informativoTipoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Informativo não encontrado"));
+    }
+
     public List<InformativoTipo> listarTodos(){
         return informativoTipoRepository.findAll();
     }
@@ -31,7 +36,7 @@ public class InformativoTipoService {
     }
 
     public InformativoTipo atualizar(Long id, AtualizarInformativoTipoDTO dto){
-        InformativoTipo informativoTipo = informativoTipoRepository.findById(id).orElseThrow(() -> new RuntimeException("Informativo do tipo não encontrado"));
+        InformativoTipo informativoTipo = buscarPorId(id);
 
         informativoTipo.setNomeTipo(dto.getNomeTipo());
         informativoTipo.setInformativo(dto.getInformativo());

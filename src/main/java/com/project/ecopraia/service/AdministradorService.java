@@ -12,11 +12,15 @@ import com.project.ecopraia.repository.AdministradorRepository;
 public class AdministradorService {
     private final AdministradorRepository administradorRepository;
 
-    public AdministradorService(AdministradorRepository administradorRepository){
+    public AdministradorService(AdministradorRepository administradorRepository) {
         this.administradorRepository = administradorRepository;
     }
 
-    public Administrador criar(CriarAdministradorDTO dto){
+    public Administrador buscarPorId(Long id) {
+        return administradorRepository.findById(id).orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
+    }
+
+    public Administrador criar(CriarAdministradorDTO dto) {
         Administrador administrador = new Administrador();
 
         administrador.setNome(dto.getNome());
@@ -29,8 +33,8 @@ public class AdministradorService {
         return administradorRepository.save(administrador);
     }
 
-    public Administrador atualizar(Long id, AtualizarAdministradorDTO dto){
-        Administrador administrador = administradorRepository.findById(id).orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
+    public Administrador atualizar(Long id, AtualizarAdministradorDTO dto) {
+        Administrador administrador = buscarPorId(id);
         administrador.setNome(dto.getNome());
         administrador.setEmail(dto.getEmail());
         administrador.setInstituicao(dto.getInstituicao());
@@ -38,13 +42,13 @@ public class AdministradorService {
         return administradorRepository.save(administrador);
     }
 
-    public Administrador atualizarSenha(Long id, AtualizarSenhaAdministradorDTO dto){
-        Administrador administrador = administradorRepository.findById(id).orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
+    public Administrador atualizarSenha(Long id, AtualizarSenhaAdministradorDTO dto) {
+        Administrador administrador = buscarPorId(id);
         administrador.setSenha(dto.getSenha());
         return administradorRepository.save(administrador);
     }
 
-    public void excluir(Long id){
+    public void excluir(Long id) {
         administradorRepository.deleteById(id);
     }
 }

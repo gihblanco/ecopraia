@@ -16,6 +16,10 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    }
+
     public Usuario criar(CriarUsuarioDTO dto){
         Usuario usuario = new Usuario();
 
@@ -27,14 +31,14 @@ public class UsuarioService {
     }
 
     public Usuario atualizar(Long id, AtualizarUsuarioDTO dto) {
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        Usuario usuario = buscarPorId(id);
         usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());
         return usuarioRepository.save(usuario);
     }
 
     public Usuario atualizarSenha(Long id, AtualizarSenhaUsuarioDTO dto){
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        Usuario usuario = buscarPorId(id);
         usuario.setSenha(dto.getSenha());
         return usuarioRepository.save(usuario);
     }

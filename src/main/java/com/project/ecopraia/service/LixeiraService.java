@@ -18,9 +18,15 @@ public class LixeiraService {
 
     private final InformativoTipoRepository informativoTipoRepository;
 
+    
     public LixeiraService(LixeiraRepository lixeiraRepository, InformativoTipoRepository informativoTipoRepository) {
         this.lixeiraRepository = lixeiraRepository;
         this.informativoTipoRepository = informativoTipoRepository;
+    }
+
+    public Lixeira buscarPorId(Long id) {
+        return lixeiraRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Lixeira não encontrado"));
     }
 
     public List<Lixeira> listarTodos() {
@@ -42,8 +48,7 @@ public class LixeiraService {
     }
 
     public Lixeira atualizar(Long id, AtualizarLixeiraDTO dto) {
-        Lixeira lixeira = lixeiraRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Lixeira não encontrada"));
+        Lixeira lixeira = buscarPorId(id);
 
         InformativoTipo informativoTipo = informativoTipoRepository
                 .findById(dto.getInformativoTipoId())
