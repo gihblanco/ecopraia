@@ -1,6 +1,6 @@
 package com.project.ecopraia.entity.dtos.usuario;
 
-public class AtualizarSenhaDTO {
+public class AtualizarSenhaUsuarioDTO {
     
     private Long id;
     private String senha;
