@@ -21,6 +21,11 @@ public class AdministradorService {
     }
 
     public Administrador criar(CriarAdministradorDTO dto) {
+
+        if (administradorRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("Email já cadastrado");
+        }
+
         Administrador administrador = new Administrador();
 
         administrador.setNome(dto.getNome());
@@ -35,6 +40,11 @@ public class AdministradorService {
 
     public Administrador atualizar(Long id, AtualizarAdministradorDTO dto) {
         Administrador administrador = buscarPorId(id);
+
+        if (administradorRepository.existsByEmailAndIdNot(dto.getEmail(), id)) {
+            throw new RuntimeException("Email já cadastrado");
+        }
+
         administrador.setNome(dto.getNome());
         administrador.setEmail(dto.getEmail());
         administrador.setInstituicao(dto.getInstituicao());

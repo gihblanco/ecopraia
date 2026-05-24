@@ -24,6 +24,7 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Long id;
     private String nome;
+    @Column(unique = true)
     private String email;
     private String senha;
 

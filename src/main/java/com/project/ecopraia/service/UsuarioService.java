@@ -21,6 +21,11 @@ public class UsuarioService {
     }
 
     public Usuario criar(CriarUsuarioDTO dto){
+
+        if (usuarioRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("Email já cadastrado");
+        }
+
         Usuario usuario = new Usuario();
 
         usuario.setNome(dto.getNome());
@@ -32,6 +37,11 @@ public class UsuarioService {
 
     public Usuario atualizar(Long id, AtualizarUsuarioDTO dto) {
         Usuario usuario = buscarPorId(id);
+
+        if (usuarioRepository.existsByEmailAndIdNot(dto.getEmail(), id)) {
+            throw new RuntimeException("Email já cadastrado");
+        }
+
         usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());
         return usuarioRepository.save(usuario);

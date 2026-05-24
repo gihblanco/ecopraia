@@ -46,7 +46,7 @@ public class HistoricoController {
         }
     }
 
-    @PostMapping("/criar")
+    @PostMapping
     public ResponseEntity<?> criar(@RequestParam Long usuarioId, @RequestParam Long lixeiraId, @RequestParam TipoEvento tipoEvento){
         try {
             historicoService.registrarEvento(usuarioId, lixeiraId, tipoEvento);

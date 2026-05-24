@@ -13,6 +13,8 @@ import com.project.ecopraia.entity.dtos.informativo.AtualizarInformativoTipoDTO;
 import com.project.ecopraia.entity.dtos.informativo.CriarInformativoTipoDTO;
 import com.project.ecopraia.service.InformativoTipoService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,8 +52,8 @@ public class InformativoTipoController {
         }
     }
 
-    @PostMapping("/criar")
-    public ResponseEntity<?> criar(@RequestBody  CriarInformativoTipoDTO dto){
+    @PostMapping
+    public ResponseEntity<?> criar(@Valid @RequestBody CriarInformativoTipoDTO dto){
         try {
             informativoTipoService.criar(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body("Informativo criado com sucesso!");
@@ -61,7 +63,7 @@ public class InformativoTipoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody AtualizarInformativoTipoDTO dto) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody AtualizarInformativoTipoDTO dto) {
         try {
             informativoTipoService.atualizar(id, dto);
             return ResponseEntity.status(HttpStatus.OK).body("Informativo atualizado com sucesso!");

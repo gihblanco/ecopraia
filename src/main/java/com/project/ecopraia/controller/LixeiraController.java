@@ -18,6 +18,8 @@ import com.project.ecopraia.entity.dtos.lixeira.AtualizarLixeiraDTO;
 import com.project.ecopraia.entity.dtos.lixeira.CriarLixeiraDTO;
 import com.project.ecopraia.service.LixeiraService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/lixeiras")
 public class LixeiraController {
@@ -48,8 +50,8 @@ public class LixeiraController {
         }
     }
 
-    @PostMapping("/criar")
-    public ResponseEntity<?> criar(@RequestBody CriarLixeiraDTO dto){
+    @PostMapping
+    public ResponseEntity<?> criar(@Valid @RequestBody CriarLixeiraDTO dto){
         try {
             lixeiraService.criar(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body("Lixeira criada com sucesso!");
@@ -59,7 +61,7 @@ public class LixeiraController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody AtualizarLixeiraDTO dto){
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody AtualizarLixeiraDTO dto){
         try {
             lixeiraService.atualizar(id, dto);
             return ResponseEntity.status(HttpStatus.OK).body("Lixeira atualizada com sucesso!");

@@ -1,9 +1,16 @@
 package com.project.ecopraia.entity.dtos.informativo;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class AtualizarInformativoTipoDTO {
     
+    @NotBlank(message = "Obrigatório o nome do tipo")
     private String nomeTipo;
+
+    @NotBlank(message = "Obrigatória a descrição do informativo")
     private String informativo;
+
+    @NotBlank(message = "Obrigatória a cor do tipo")
     private String cor;
 
     public String getNomeTipo() {

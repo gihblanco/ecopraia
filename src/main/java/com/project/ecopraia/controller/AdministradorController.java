@@ -20,6 +20,8 @@ import com.project.ecopraia.entity.dtos.admin.AtualizarSenhaAdministradorDTO;
 import com.project.ecopraia.entity.dtos.admin.CriarAdministradorDTO;
 import com.project.ecopraia.service.AdministradorService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/administradores")
 public class AdministradorController {
@@ -41,8 +43,8 @@ public class AdministradorController {
         }
     }
 
-    @PostMapping("/criar")
-    public ResponseEntity<?> criar(@RequestBody CriarAdministradorDTO dto) {
+    @PostMapping
+    public ResponseEntity<?> criar(@Valid @RequestBody CriarAdministradorDTO dto) {
         try {
             administradorService.criar(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso!");
@@ -52,7 +54,7 @@ public class AdministradorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody AtualizarAdministradorDTO dto) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody AtualizarAdministradorDTO dto) {
         try {
             administradorService.atualizar(id, dto);
             return ResponseEntity.status(HttpStatus.OK).body("Usuário atualizado com sucesso!");
@@ -61,8 +63,8 @@ public class AdministradorController {
         }
     }
 
-    @PatchMapping("/atualizarSenha/{id}")
-    public ResponseEntity<?> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaAdministradorDTO dto) {
+    @PatchMapping("/{id}/senha")
+    public ResponseEntity<?> atualizarSenha(@PathVariable Long id, @Valid @RequestBody AtualizarSenhaAdministradorDTO dto) {
         try {
             administradorService.atualizarSenha(id, dto);
             return ResponseEntity.status(HttpStatus.OK).body("Senha atualizada com sucesso!");

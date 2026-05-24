@@ -1,13 +1,31 @@
 package com.project.ecopraia.entity.dtos.admin;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class CriarAdministradorDTO {
 
+    @NotBlank(message = "O nome é obrigatório")
+    @Size(min = 3, max = 255, message = "O nome deve ter entre 3 a 255 caracteres")
     private String nome;
+
+    @NotBlank(message = "O e-mail é obrigatório")
+    @Email(message = "E-mail inválido")
     private String email;
+
+    @NotBlank(message = "A senha é obrigatória")
+    @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
 
+    @NotBlank(message = "O cpf é obrigatório")
+    @Size(min = 11, message = "O cpf deve possuir o mínimo de 11 digitos")
     private String cpf;
+
+    @NotBlank(message = "A instituição é obrigatória")
     private String instituicao;
+
+    @NotBlank(message = "O cargo é obrigatório")
     private String cargo;
 
     public String getNome() {

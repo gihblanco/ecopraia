@@ -1,10 +1,16 @@
 package com.project.ecopraia.entity.dtos.lixeira;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class CriarLixeiraDTO {
     
+    @NotBlank(message = "Latitude obrigatória")
     private Double latitude;
+
+    @NotBlank(message = "Longitude obrigatória")
     private Double longitude;
 
+    @NotBlank(message = "Informativo obrigatório")
     private Long informativoTipoId;
 
     public Double getLatitude() {
