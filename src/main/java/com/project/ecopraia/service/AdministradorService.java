@@ -1,5 +1,6 @@
 package com.project.ecopraia.service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.ecopraia.entity.Administrador;
@@ -11,13 +12,16 @@ import com.project.ecopraia.repository.AdministradorRepository;
 @Service
 public class AdministradorService {
     private final AdministradorRepository administradorRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public AdministradorService(AdministradorRepository administradorRepository) {
+    public AdministradorService(AdministradorRepository administradorRepository, BCryptPasswordEncoder passwordEncoder) {
         this.administradorRepository = administradorRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Administrador buscarPorId(Long id) {
-        return administradorRepository.findById(id).orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
+        return administradorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
     }
 
     public Administrador criar(CriarAdministradorDTO dto) {
@@ -30,7 +34,8 @@ public class AdministradorService {
 
         administrador.setNome(dto.getNome());
         administrador.setEmail(dto.getEmail());
-        administrador.setSenha(dto.getSenha());
+        administrador.setSenha(
+                passwordEncoder.encode(dto.getSenha()));
         administrador.setCpf(dto.getCpf());
         administrador.setInstituicao(dto.getInstituicao());
         administrador.setCargo(dto.getCargo());
@@ -54,7 +59,8 @@ public class AdministradorService {
 
     public Administrador atualizarSenha(Long id, AtualizarSenhaAdministradorDTO dto) {
         Administrador administrador = buscarPorId(id);
-        administrador.setSenha(dto.getSenha());
+        administrador.setSenha(
+                passwordEncoder.encode(dto.getSenha()));
         return administradorRepository.save(administrador);
     }
 
