@@ -28,7 +28,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/buscar/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         try {
             Usuario usuario = usuarioService.buscarPorId(id);
@@ -48,7 +48,7 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/atualizar/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody AtualizarUsuarioDTO dto) {
         try {
             usuarioService.atualizar(id, dto);
@@ -58,7 +58,7 @@ public class UsuarioController {
         }
     }
 
-    @PatchMapping("/atualizar/senha/{id}")
+    @PatchMapping("/atualizarSenha/{id}")
     public ResponseEntity<?> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaUsuarioDTO dto) {
         try {
             usuarioService.atualizarSenha(id, dto);
@@ -68,7 +68,7 @@ public class UsuarioController {
         }
     }
 
-    @DeleteMapping("/excluir/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> excluir(@PathVariable Long id) {
         try {
             usuarioService.excluir(id);

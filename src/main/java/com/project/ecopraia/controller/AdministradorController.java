@@ -31,7 +31,7 @@ public class AdministradorController {
         this.administradorService = administradorService;
     }
 
-    @GetMapping("/buscar/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         try {
             Administrador administrador = administradorService.buscarPorId(id);
@@ -51,17 +51,17 @@ public class AdministradorController {
         }
     }
 
-    @PutMapping("/atualizar/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody AtualizarAdministradorDTO dto) {
         try {
             administradorService.atualizar(id, dto);
-            return ResponseEntity.status(HttpStatus.OK).body("Usuário atualiado com sucesso!");
+            return ResponseEntity.status(HttpStatus.OK).body("Usuário atualizado com sucesso!");
         } catch (Exception ex) {
             return new ResponseEntity<>("Erro ao buscar usuário por id.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PatchMapping("/atualizar/senha/{id}")
+    @PatchMapping("/atualizarSenha/{id}")
     public ResponseEntity<?> atualizarSenha(@PathVariable Long id, @RequestBody AtualizarSenhaAdministradorDTO dto) {
         try {
             administradorService.atualizarSenha(id, dto);
@@ -71,11 +71,11 @@ public class AdministradorController {
         }
     }
 
-    @DeleteMapping("/excluir/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> excluir(@PathVariable Long id){
         try{
             administradorService.excluir(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Senha atualizada com sucesso!");
+            return ResponseEntity.status(HttpStatus.OK).body("Usuário excluído com sucesso!");
         } catch (Exception ex) {
             return new ResponseEntity<>("Erro ao excluir usuário.", HttpStatus.INTERNAL_SERVER_ERROR);
         }

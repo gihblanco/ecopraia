@@ -1,6 +1,7 @@
 package com.project.ecopraia.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,10 @@ public class HistoricoService {
         this.historicoRepository = historicoRepository;
         this.usuarioRepository = usuarioRepository;
         this.lixeiraRepository = lixeiraRepository;
+    }
+
+    public List<Historico> listarTodos(){
+        return historicoRepository.findAll();
     }
 
     public Historico buscarPorId(Long id) {
