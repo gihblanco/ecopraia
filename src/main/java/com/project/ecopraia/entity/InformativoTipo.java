@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -29,7 +30,7 @@ public class InformativoTipo {
     private String cor;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "informativoTipo")
+    @ManyToMany(mappedBy = "informativosTipos")
     private List<Lixeira> lixeiras;
 
     public Long getId() {

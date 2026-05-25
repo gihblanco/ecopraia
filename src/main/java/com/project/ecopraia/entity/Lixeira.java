@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -15,7 +17,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "lixeira")
 public class Lixeira {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_lixeira")
@@ -23,9 +25,9 @@ public class Lixeira {
     private Double latitude;
     private Double longitude;
 
-    @ManyToOne
-    @JoinColumn(name = "id_informativo_tipo")
-    private InformativoTipo informativoTipo;
+    @ManyToMany
+    @JoinTable(name = "lixeira_informativo_tipo", joinColumns = @JoinColumn(name = "id_lixeira"), inverseJoinColumns = @JoinColumn(name = "id_informativo_tipo"))
+    private List<InformativoTipo> informativosTipos;
 
     @OneToMany(mappedBy = "lixeira")
     private List<Historico> historicos;
@@ -38,28 +40,30 @@ public class Lixeira {
         this.id = id;
     }
 
-    public Double getLatitude(){
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude){
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Double getLongitude(){
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude){
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    public InformativoTipo getInformativoTipo() {
-        return informativoTipo;
+    public List<InformativoTipo> getInformativosTipos() {
+        return informativosTipos;
     }
 
-    public void setInformativoTipo(InformativoTipo informativoTipo) {
-        this.informativoTipo = informativoTipo;
+    public void setInformativosTipos(
+            List<InformativoTipo> informativosTipos) {
+
+        this.informativosTipos = informativosTipos;
     }
 
     public List<Historico> getHistoricos() {

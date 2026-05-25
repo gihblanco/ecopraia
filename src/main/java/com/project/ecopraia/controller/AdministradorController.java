@@ -49,7 +49,7 @@ public class AdministradorController {
             administradorService.criar(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso!");
         } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao buscar usuário por id.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Erro ao criar usuário.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -59,7 +59,7 @@ public class AdministradorController {
             administradorService.atualizar(id, dto);
             return ResponseEntity.status(HttpStatus.OK).body("Usuário atualizado com sucesso!");
         } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao buscar usuário por id.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Erro ao atualizar usuário.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

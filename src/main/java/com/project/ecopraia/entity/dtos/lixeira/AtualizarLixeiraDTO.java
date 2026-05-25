@@ -1,17 +1,19 @@
 package com.project.ecopraia.entity.dtos.lixeira;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.List;
+
+import jakarta.validation.constraints.NotNull;
 
 public class AtualizarLixeiraDTO {
     
-    @NotBlank(message = "Latitude obrigatória")
+    @NotNull(message = "Latitude obrigatória")
     private Double latitude;
 
-    @NotBlank(message = "Longitude obrigatória")
+    @NotNull(message = "Longitude obrigatória")
     private Double longitude;
 
-    @NotBlank(message = "Informativo obrigatório")
-    private Long informativoTipoId;
+    @NotNull(message = "Informativo obrigatório")
+    private List<Long> informativosTiposIds;
 
     public Double getLatitude() {
         return latitude;
@@ -29,11 +31,11 @@ public class AtualizarLixeiraDTO {
         this.longitude = longitude;
     }
 
-    public Long getInformativoTipoId() {
-        return informativoTipoId;
+    public List<Long> getInformativosTiposIds() {
+        return informativosTiposIds;
     }
 
-    public void setInformativoTipoId(Long informativoTipoId) {
-        this.informativoTipoId = informativoTipoId;
+    public void setInformativosTiposIds(List<Long> informativosTiposIds) {
+        this.informativosTiposIds = informativosTiposIds;
     }
 }

@@ -18,7 +18,6 @@ public class LixeiraService {
 
     private final InformativoTipoRepository informativoTipoRepository;
 
-    
     public LixeiraService(LixeiraRepository lixeiraRepository, InformativoTipoRepository informativoTipoRepository) {
         this.lixeiraRepository = lixeiraRepository;
         this.informativoTipoRepository = informativoTipoRepository;
@@ -34,15 +33,14 @@ public class LixeiraService {
     }
 
     public Lixeira criar(CriarLixeiraDTO dto) {
-        InformativoTipo informativoTipo = informativoTipoRepository
-                .findById(dto.getInformativoTipoId())
-                .orElseThrow(() -> new RuntimeException("Informativo não encontrado"));
+        List<InformativoTipo> informativosTipos = informativoTipoRepository.findAllById(
+                dto.getInformativosTiposIds());
 
         Lixeira lixeira = new Lixeira();
 
         lixeira.setLatitude(dto.getLatitude());
         lixeira.setLongitude(dto.getLongitude());
-        lixeira.setInformativoTipo(informativoTipo);
+        lixeira.setInformativosTipos(informativosTipos);
 
         return lixeiraRepository.save(lixeira);
     }
@@ -50,13 +48,12 @@ public class LixeiraService {
     public Lixeira atualizar(Long id, AtualizarLixeiraDTO dto) {
         Lixeira lixeira = buscarPorId(id);
 
-        InformativoTipo informativoTipo = informativoTipoRepository
-                .findById(dto.getInformativoTipoId())
-                .orElseThrow(() -> new RuntimeException("Informativo não encontrado"));
+        List<InformativoTipo> informativosTipos = informativoTipoRepository.findAllById(
+                dto.getInformativosTiposIds());
 
         lixeira.setLatitude(dto.getLatitude());
         lixeira.setLongitude(dto.getLongitude());
-        lixeira.setInformativoTipo(informativoTipo);
+        lixeira.setInformativosTipos(informativosTipos);
 
         return lixeiraRepository.save(lixeira);
     }
