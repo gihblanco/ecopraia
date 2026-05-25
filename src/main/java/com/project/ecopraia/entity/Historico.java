@@ -2,6 +2,7 @@ package com.project.ecopraia.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.ecopraia.entity.enums.TipoEvento;
 
 import jakarta.persistence.Column;
@@ -23,12 +24,15 @@ public class Historico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_historico")
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "id_usuario")
+    @JsonIgnore
     private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "id_lixeira")
+    @JsonIgnore
     private Lixeira lixeira;
 
     @Enumerated(EnumType.STRING)

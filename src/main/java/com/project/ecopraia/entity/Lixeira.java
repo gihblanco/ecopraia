@@ -2,6 +2,7 @@ package com.project.ecopraia.entity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ public class Lixeira {
     @JoinTable(name = "lixeira_informativo_tipo", joinColumns = @JoinColumn(name = "id_lixeira"), inverseJoinColumns = @JoinColumn(name = "id_informativo_tipo"))
     private List<InformativoTipo> informativosTipos;
 
-    @OneToMany(mappedBy = "lixeira")
+    @OneToMany(mappedBy = "lixeira", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Historico> historicos;
 
     public Long getId() {
