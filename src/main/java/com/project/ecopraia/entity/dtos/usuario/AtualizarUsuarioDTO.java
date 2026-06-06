@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class AtualizarUsuarioDTO {
-    
+
     @NotBlank(message = "O nome é obrigatório")
     @Size(min = 3, max = 255, message = "O nome deve ter entre 3 a 255 caracteres")
     private String nome;
@@ -27,6 +27,13 @@ public class AtualizarUsuarioDTO {
     }
 
     public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public AtualizarUsuarioDTO(
+            @NotBlank(message = "O nome é obrigatório") @Size(min = 3, max = 255, message = "O nome deve ter entre 3 a 255 caracteres") String nome,
+            @NotBlank(message = "O e-mail é obrigatório") @Email(message = "E-mail inválido") String email) {
+        this.nome = nome;
         this.email = email;
     }
 }
