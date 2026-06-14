@@ -32,6 +32,17 @@ public class InformativoTipo {
     @ManyToMany(mappedBy = "informativosTipos")
     private List<Lixeira> lixeiras;
 
+    public InformativoTipo(Long id, String nomeTipo, String informativo, String cor) {
+        this.id = id;
+        this.nomeTipo = nomeTipo;
+        this.informativo = informativo;
+        this.cor = cor;
+    }
+
+    public InformativoTipo() {
+
+    }
+
     public Long getId() {
         return id;
     }
@@ -40,27 +51,27 @@ public class InformativoTipo {
         this.id = id;
     }
 
-    public String getNomeTipo(){
+    public String getNomeTipo() {
         return nomeTipo;
     }
 
-    public void setNomeTipo(String nomeTipo){
+    public void setNomeTipo(String nomeTipo) {
         this.nomeTipo = nomeTipo;
     }
 
-    public String getInformativo(){
+    public String getInformativo() {
         return informativo;
     }
 
-    public void setInformativo(String informativo){
+    public void setInformativo(String informativo) {
         this.informativo = informativo;
     }
 
-    public String getCor(){
+    public String getCor() {
         return cor;
     }
-    
-    public void setCor(String cor){
+
+    public void setCor(String cor) {
         this.cor = cor;
     }
 

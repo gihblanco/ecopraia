@@ -41,7 +41,7 @@ public class LixeiraService {
 
     public Lixeira buscarPorId(Long id) {
         return lixeiraRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Lixeira não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Lixeira não encontrada"));
     }
 
     public List<Lixeira> listarTodos() {
@@ -98,7 +98,7 @@ public class LixeiraService {
         Usuario usuario = getUsuarioAutenticado();
 
         Lixeira lixeira = buscarPorId(id);
-
+        
         historicoService.registrarEvento(
                 usuario.getId(),
                 id,
