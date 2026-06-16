@@ -65,6 +65,10 @@ public class AdministradorService {
     }
 
     public void excluir(Long id) {
+        if(!administradorRepository.existsById(id)) {
+            throw  new RuntimeException("Administrador não encontrado");
+        }
+        
         administradorRepository.deleteById(id);
     }
 }

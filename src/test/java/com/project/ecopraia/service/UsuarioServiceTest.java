@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,7 +45,7 @@ public class UsuarioServiceTest {
         novoUsuario.setId(34L);
         novoUsuario.setNome((usuarioDto.getNome()));
         novoUsuario.setEmail(usuarioDto.getEmail());
-        novoUsuario.setSenha(passwordEncoder.encode(usuarioDto.getSenha()));
+        novoUsuario.setSenha("senhacriptografadafalsa123");
 
         Usuario usuarioResultado = usuarioService.criar(usuarioDto);
 
@@ -54,6 +53,8 @@ public class UsuarioServiceTest {
         assertEquals("Luiz Felipe", usuarioResultado.getNome());
         assertEquals("lipe_42@gmail.com", usuarioResultado.getEmail());
         assertEquals("senhacriptografadafalsa123", usuarioResultado.getSenha());
+        verify(passwordEncoder, times(1)).encode("senha123");
+        verify(usuarioRepository, times(1)).save(any(Usuario.class));
     }
 
     @Test
@@ -87,14 +88,14 @@ public class UsuarioServiceTest {
     void deveConseguirAtualizarUsuarioComSucesso() {
         Long idExistente = 34L;
         AtualizarUsuarioDTO usuarioEditado = new AtualizarUsuarioDTO("Luiz Modificado", "luiznovo43@gmail.com");
-
         Usuario usuarioAntigo = new Usuario();
-        usuarioAntigo.setId(idExistente);
-        usuarioAntigo.setNome("Luiz Felipe");
-        usuarioAntigo.setEmail("lipe_42@gmail.com");
 
         when(usuarioRepository.findById(idExistente)).thenReturn(Optional.of(usuarioAntigo));
         when(usuarioRepository.save(any(Usuario.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        usuarioAntigo.setId(idExistente);
+        usuarioAntigo.setNome("Luiz Felipe");
+        usuarioAntigo.setEmail("lipe_42@gmail.com");
 
         Usuario usuarioResultado = usuarioService.atualizar(idExistente, usuarioEditado);
 

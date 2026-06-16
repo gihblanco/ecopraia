@@ -9,6 +9,10 @@ public class AtualizarSenhaAdministradorDTO {
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
 
+    public AtualizarSenhaAdministradorDTO(String senha) {
+        this.senha = senha;
+    }
+
     public String getSenha() {
         return senha;
     }
