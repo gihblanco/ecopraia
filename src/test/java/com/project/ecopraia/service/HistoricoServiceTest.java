@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -67,5 +69,66 @@ public class HistoricoServiceTest {
         verify(usuarioRepository, times(1)).findById(usuarioId);
         verify(lixeiraRepository, times(1)).findById(lixeiraId);
         verify(historicoRepository, times(1)).save(any(Historico.class));
+    }
+
+    @Test
+    void deveEncontrarUmEventoEspecificoComSucessoPeloSeuId() {
+        Long idExistente = 5L;
+        Historico novoEvento = new Historico();
+        novoEvento.setId(idExistente);
+        novoEvento.setTipoEvento(TipoEvento.CRIACAO);
+
+        when(historicoRepository.findById(idExistente)).thenReturn(Optional.of(novoEvento));
+
+        Historico historicoResultado = historicoService.buscarPorId(idExistente);
+
+        assertEquals(5L, historicoResultado.getId());
+        assertEquals(TipoEvento.CRIACAO, historicoResultado.getTipoEvento());
+        verify(historicoRepository, times(1)).findById(idExistente);
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoOIdDeEventoNaoExistir() {
+        Long idInexistente = 6L;
+
+        Historico novoEvento = new Historico();
+        novoEvento.setId(idInexistente);
+        novoEvento.setTipoEvento(TipoEvento.EDICAO);
+
+        when(historicoRepository.findById(idInexistente)).thenReturn(Optional.empty());
+
+        RuntimeException excecao = assertThrows(RuntimeException.class, () -> {
+            historicoService.buscarPorId(idInexistente);
+        });
+
+        assertEquals("Historico não encontrado", excecao.getMessage());
+        verify(historicoRepository, times(1)).findById(idInexistente);
+    }
+
+    @Test
+    void deveExcluirUmHistoricoComSucesso() {
+        Long idExistente = 35L;
+
+        when(historicoRepository.existsById(idExistente)).thenReturn(true);
+
+        historicoService.excluir(idExistente);
+
+        verify(historicoRepository, times(1)).existsById(idExistente);
+        verify(historicoRepository, times(1)).deleteById(idExistente);
+    }
+
+    @Test
+    void deveRetornarExcecaoAoTentarExcluirHistoricoInexistente() {
+        Long idInexistente = 7L;
+
+        when(historicoRepository.existsById(idInexistente)).thenReturn(false);
+
+        RuntimeException excecao = assertThrows(RuntimeException.class, () -> {
+            historicoService.excluir(idInexistente);
+        });
+
+        assertEquals("Historico não encontrado", excecao.getMessage());
+        verify(historicoRepository, times(1)).existsById(idInexistente);
+        verify(historicoRepository, never()).deleteById(idInexistente);
     }
 }

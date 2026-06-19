@@ -54,6 +54,10 @@ public class HistoricoService {
     }
 
     public void excluir(Long id) {
+        if(!historicoRepository.existsById(id)) {
+            throw  new RuntimeException("Historico não encontrado");
+        }
+        
         historicoRepository.deleteById(id);
     }
 }
