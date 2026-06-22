@@ -1,7 +1,10 @@
 package com.project.ecopraia.controller;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,7 +26,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-    
+
     private final UsuarioService usuarioService;
 
     public UsuarioController(UsuarioService usuarioService) {
@@ -38,6 +41,14 @@ public class UsuarioController {
         } catch (Exception ex) {
             return new ResponseEntity<>("Erro ao buscar usuário por id.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> me(Authentication authentication) {
+        return ResponseEntity.ok(
+                Map.of(
+                        "usuario", authentication.getName(),
+                        "roles", authentication.getAuthorities()));
     }
 
     @PostMapping

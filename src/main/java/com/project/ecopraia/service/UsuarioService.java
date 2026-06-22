@@ -7,6 +7,7 @@ import com.project.ecopraia.entity.Usuario;
 import com.project.ecopraia.entity.dtos.usuario.AtualizarSenhaUsuarioDTO;
 import com.project.ecopraia.entity.dtos.usuario.AtualizarUsuarioDTO;
 import com.project.ecopraia.entity.dtos.usuario.CriarUsuarioDTO;
+import com.project.ecopraia.entity.enums.Role;
 import com.project.ecopraia.repository.UsuarioRepository;
 
 @Service
@@ -35,6 +36,7 @@ public class UsuarioService {
         usuario.setEmail(dto.getEmail());
         usuario.setSenha(
                 passwordEncoder.encode(dto.getSenha()));
+        usuario.setRole(Role.ROLE_BANHISTA);
 
         return usuarioRepository.save(usuario);
     }

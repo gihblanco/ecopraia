@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +52,7 @@ public class LixeiraController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> criar(@Valid @RequestBody CriarLixeiraDTO dto){
         try {
             lixeiraService.criar(dto);
@@ -61,6 +63,7 @@ public class LixeiraController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody AtualizarLixeiraDTO dto){
         try {
             lixeiraService.atualizar(id, dto);
@@ -71,6 +74,7 @@ public class LixeiraController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> excluir(@PathVariable Long id){
         try {
             lixeiraService.deletar(id);

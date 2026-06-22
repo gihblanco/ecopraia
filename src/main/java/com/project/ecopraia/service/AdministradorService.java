@@ -7,6 +7,7 @@ import com.project.ecopraia.entity.Administrador;
 import com.project.ecopraia.entity.dtos.admin.AtualizarAdministradorDTO;
 import com.project.ecopraia.entity.dtos.admin.AtualizarSenhaAdministradorDTO;
 import com.project.ecopraia.entity.dtos.admin.CriarAdministradorDTO;
+import com.project.ecopraia.entity.enums.Role;
 import com.project.ecopraia.repository.AdministradorRepository;
 
 @Service
@@ -39,6 +40,7 @@ public class AdministradorService {
         administrador.setCpf(dto.getCpf());
         administrador.setInstituicao(dto.getInstituicao());
         administrador.setCargo(dto.getCargo());
+        administrador.setRole(Role.ROLE_ADMIN);
 
         return administradorRepository.save(administrador);
     }
