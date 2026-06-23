@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,50 +15,49 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.project.ecopraia.security.JwtFilter;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityFilterConfig {
 
     private final JwtFilter jwtFilter;
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     public SecurityFilterConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http) throws Exception {
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-        http
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+
+        return http
                 .csrf(csrf -> csrf.disable())
-
-                .sessionManagement(session -> session.sessionCreationPolicy(
-                        SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers(
-                                "/auth/**",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**")
-                        .permitAll()
+                        // Rotas públicas
+                        .requestMatchers("/auth/**").permitAll()
 
-                        .requestMatchers(
-                                HttpMethod.POST,
-                                "/usuarios",
-                                "/administradores")
-                        .permitAll()
+                        // Cadastro de usuários
+                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
 
+                        // Cadastro de administradores
+                        .requestMatchers(HttpMethod.POST, "/administradores").permitAll()
+
+                        // Demais rotas exigem autenticação
                         .anyRequest().authenticated())
+
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .addFilterBefore(
                         jwtFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class)
 
-        return http.build();
+                .build();
     }
 
     @Bean

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,6 +54,7 @@ public class InformativoTipoController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> criar(@Valid @RequestBody CriarInformativoTipoDTO dto){
         try {
             informativoTipoService.criar(dto);
@@ -63,6 +65,7 @@ public class InformativoTipoController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody AtualizarInformativoTipoDTO dto) {
         try {
             informativoTipoService.atualizar(id, dto);
@@ -73,6 +76,7 @@ public class InformativoTipoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> excluir(@PathVariable Long id){
         try {
             informativoTipoService.excluir(id);
