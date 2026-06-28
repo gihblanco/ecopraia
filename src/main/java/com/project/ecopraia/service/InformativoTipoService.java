@@ -46,6 +46,10 @@ public class InformativoTipoService {
     }
 
     public void excluir(Long id){
+        if(!informativoTipoRepository.existsById(id)) {
+            throw  new RuntimeException("Informativo não encontrado");
+        }
+        
         informativoTipoRepository.deleteById(id);
     }
 }
