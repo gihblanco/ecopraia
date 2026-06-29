@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.ecopraia.entity.Lixeira;
 import com.project.ecopraia.entity.dtos.lixeira.AtualizarLixeiraDTO;
 import com.project.ecopraia.entity.dtos.lixeira.CriarLixeiraDTO;
+import com.project.ecopraia.entity.enums.ModoDeslocamento;
 import com.project.ecopraia.service.LixeiraService;
 
 import jakarta.validation.Valid;
@@ -81,6 +83,39 @@ public class LixeiraController {
             return ResponseEntity.status(HttpStatus.OK).body("Lixeira excluída com sucesso!");
         } catch (Exception ex) {
             return new ResponseEntity<>("Erro ao excluir lixeira.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}/distancia")
+    public ResponseEntity<?> distancia(@PathVariable Long id,
+                                       @RequestParam double lat,
+                                       @RequestParam double lng){
+        try {
+            return ResponseEntity.ok(lixeiraService.calcularDistancia(id, lat, lng));
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Erro ao calcular distância.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/proximas")
+    public ResponseEntity<?> proximas(@RequestParam double lat,
+                                      @RequestParam double lng){
+        try {
+            return ResponseEntity.ok(lixeiraService.listarPorProximidade(lat, lng));
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Erro ao listar lixeiras próximas.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}/rota")
+    public ResponseEntity<?> rota(@PathVariable Long id,
+                                  @RequestParam double lat,
+                                  @RequestParam double lng,
+                                  @RequestParam(defaultValue = "A_PE") ModoDeslocamento modo){
+        try {
+            return ResponseEntity.ok(lixeiraService.calcularRota(id, lat, lng, modo));
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Erro ao calcular rota.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

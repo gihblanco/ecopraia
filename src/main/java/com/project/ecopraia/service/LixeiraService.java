@@ -1,5 +1,6 @@
 package com.project.ecopraia.service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -11,9 +12,14 @@ import com.project.ecopraia.entity.Lixeira;
 import com.project.ecopraia.entity.Usuario;
 import com.project.ecopraia.entity.dtos.lixeira.AtualizarLixeiraDTO;
 import com.project.ecopraia.entity.dtos.lixeira.CriarLixeiraDTO;
+import com.project.ecopraia.entity.dtos.lixeira.LixeiraDistanciaDTO;
+import com.project.ecopraia.entity.dtos.lixeira.RotaLixeiraDTO;
+import com.project.ecopraia.entity.enums.ModoDeslocamento;
 import com.project.ecopraia.entity.enums.TipoEvento;
 import com.project.ecopraia.repository.InformativoTipoRepository;
 import com.project.ecopraia.repository.LixeiraRepository;
+import com.project.ecopraia.service.RotaService.RotaResultado;
+import com.project.ecopraia.util.GeoUtils;
 
 @Service
 public class LixeiraService {
@@ -24,11 +30,14 @@ public class LixeiraService {
 
     private final HistoricoService historicoService;
 
+    private final RotaService rotaService;
+
     public LixeiraService(LixeiraRepository lixeiraRepository, InformativoTipoRepository informativoTipoRepository,
-            HistoricoService historicoService) {
+            HistoricoService historicoService, RotaService rotaService) {
         this.lixeiraRepository = lixeiraRepository;
         this.informativoTipoRepository = informativoTipoRepository;
         this.historicoService = historicoService;
+        this.rotaService = rotaService;
     }
 
     private Usuario getUsuarioAutenticado() {
@@ -109,5 +118,37 @@ public class LixeiraService {
         lixeiraRepository.save(lixeira);
 
         lixeiraRepository.delete(lixeira);
+    }
+
+    public LixeiraDistanciaDTO calcularDistancia(Long idLixeira, double latUsuario, double lonUsuario) {
+        Lixeira lixeira = buscarPorId(idLixeira);
+        double distancia = GeoUtils.distanciaEmMetros(
+                latUsuario, lonUsuario, lixeira.getLatitude(), lixeira.getLongitude());
+        return new LixeiraDistanciaDTO(
+                lixeira.getId(), lixeira.getLatitude(), lixeira.getLongitude(), distancia);
+    }
+
+    public List<LixeiraDistanciaDTO> listarPorProximidade(double latUsuario, double lonUsuario) {
+        return lixeiraRepository.findAll().stream()
+                .map(l -> new LixeiraDistanciaDTO(
+                        l.getId(), l.getLatitude(), l.getLongitude(),
+                        GeoUtils.distanciaEmMetros(latUsuario, lonUsuario, l.getLatitude(), l.getLongitude())))
+                .sorted(Comparator.comparingDouble(LixeiraDistanciaDTO::getDistanciaMetros))
+                .toList();
+    }
+
+    public RotaLixeiraDTO calcularRota(Long idLixeira, double latUsuario, double lonUsuario, ModoDeslocamento modo) {
+        Lixeira lixeira = buscarPorId(idLixeira);
+
+        double linhaReta = GeoUtils.distanciaEmMetros(
+                latUsuario, lonUsuario, lixeira.getLatitude(), lixeira.getLongitude());
+
+        RotaResultado rota = rotaService.calcularRota(
+                latUsuario, lonUsuario, lixeira.getLatitude(), lixeira.getLongitude(), modo);
+
+        return new RotaLixeiraDTO(
+                lixeira.getId(), lixeira.getLatitude(), lixeira.getLongitude(),
+                linhaReta, rota.distanciaMetros(), rota.duracaoSegundos(),
+                RotaService.formatarDuracao(rota.duracaoSegundos()), modo);
     }
 }
