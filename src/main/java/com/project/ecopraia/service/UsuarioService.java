@@ -8,6 +8,8 @@ import com.project.ecopraia.entity.dtos.usuario.AtualizarSenhaUsuarioDTO;
 import com.project.ecopraia.entity.dtos.usuario.AtualizarUsuarioDTO;
 import com.project.ecopraia.entity.dtos.usuario.CriarUsuarioDTO;
 import com.project.ecopraia.entity.enums.Role;
+import com.project.ecopraia.exception.RecursoJaExisteException;
+import com.project.ecopraia.exception.RecursoNaoEncontradoException;
 import com.project.ecopraia.repository.UsuarioRepository;
 
 @Service
@@ -21,13 +23,14 @@ public class UsuarioService {
     }
 
     public Usuario buscarPorId(Long id) {
-        return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
     }
 
     public Usuario criar(CriarUsuarioDTO dto) {
 
         if (usuarioRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new RecursoJaExisteException("Este e-mail já está cadastrado");
         }
 
         Usuario usuario = new Usuario();
@@ -45,7 +48,7 @@ public class UsuarioService {
         Usuario usuario = buscarPorId(id);
 
         if (usuarioRepository.existsByEmailAndIdNot(dto.getEmail(), id)) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new RecursoJaExisteException("Este e-mail já está cadastrado");
         }
 
         usuario.setNome(dto.getNome());
@@ -61,6 +64,9 @@ public class UsuarioService {
     }
 
     public void excluir(Long id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Usuário não encontrado");
+        }
         usuarioRepository.deleteById(id);
     }
 }

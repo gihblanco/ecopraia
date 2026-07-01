@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.project.ecopraia.entity.InformativoTipo;
 import com.project.ecopraia.entity.dtos.informativo.AtualizarInformativoTipoDTO;
 import com.project.ecopraia.entity.dtos.informativo.CriarInformativoTipoDTO;
+import com.project.ecopraia.exception.RecursoNaoEncontradoException;
 import com.project.ecopraia.repository.InformativoTipoRepository;
 
 @Service
@@ -19,7 +20,7 @@ public class InformativoTipoService {
 
     public InformativoTipo buscarPorId(Long id) {
         return informativoTipoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Informativo não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Informativo não encontrado"));
     }
 
     public List<InformativoTipo> listarTodos(){
@@ -46,6 +47,9 @@ public class InformativoTipoService {
     }
 
     public void excluir(Long id){
+        if (!informativoTipoRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Informativo não encontrado");
+        }
         informativoTipoRepository.deleteById(id);
     }
 }

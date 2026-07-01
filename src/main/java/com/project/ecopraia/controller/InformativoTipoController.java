@@ -35,55 +35,35 @@ public class InformativoTipoController {
     
     @GetMapping("/todos")
     public ResponseEntity<?> listarTodos(){
-        try {
-            List<InformativoTipo> informativosTipo = informativoTipoService.listarTodos();
-            return ResponseEntity.ok(informativosTipo);
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao buscar informativos.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<InformativoTipo> informativosTipo = informativoTipoService.listarTodos();
+        return ResponseEntity.ok(informativosTipo);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
-        try {
-            InformativoTipo informativoTipo = informativoTipoService.buscarPorId(id);
-            return ResponseEntity.ok(informativoTipo);
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao buscar informativo por id.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        InformativoTipo informativoTipo = informativoTipoService.buscarPorId(id);
+        return ResponseEntity.ok(informativoTipo);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> criar(@Valid @RequestBody CriarInformativoTipoDTO dto){
-        try {
-            informativoTipoService.criar(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Informativo criado com sucesso!");
-        } catch (Exception ex){
-            return new ResponseEntity<>("Erro ao criar informativo.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        informativoTipoService.criar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Informativo criado com sucesso!");
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody AtualizarInformativoTipoDTO dto) {
-        try {
-            informativoTipoService.atualizar(id, dto);
-            return ResponseEntity.status(HttpStatus.OK).body("Informativo atualizado com sucesso!");
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao atualizar informativo.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        informativoTipoService.atualizar(id, dto);
+        return ResponseEntity.status(HttpStatus.OK).body("Informativo atualizado com sucesso!");
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> excluir(@PathVariable Long id){
-        try {
-            informativoTipoService.excluir(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Informativo excluído com sucesso!");
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao excluir informativo.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        informativoTipoService.excluir(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Informativo excluído com sucesso!");
     }
 
 }

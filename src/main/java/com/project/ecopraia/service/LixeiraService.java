@@ -16,6 +16,7 @@ import com.project.ecopraia.entity.dtos.lixeira.LixeiraDistanciaDTO;
 import com.project.ecopraia.entity.dtos.lixeira.RotaLixeiraDTO;
 import com.project.ecopraia.entity.enums.ModoDeslocamento;
 import com.project.ecopraia.entity.enums.TipoEvento;
+import com.project.ecopraia.exception.RecursoNaoEncontradoException;
 import com.project.ecopraia.repository.InformativoTipoRepository;
 import com.project.ecopraia.repository.LixeiraRepository;
 import com.project.ecopraia.service.RotaService.RotaResultado;
@@ -50,7 +51,7 @@ public class LixeiraService {
 
     public Lixeira buscarPorId(Long id) {
         return lixeiraRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Lixeira não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Lixeira não encontrada"));
     }
 
     public List<Lixeira> listarTodos() {

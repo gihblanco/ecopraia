@@ -6,8 +6,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
 import com.project.ecopraia.entity.enums.ModoDeslocamento;
+import com.project.ecopraia.exception.ServicoExternoIndisponivelException;
 
 @Service
 public class RotaService {
@@ -34,20 +36,27 @@ public class RotaService {
                         List.of(lonOrigem, latOrigem),
                         List.of(lonDestino, latDestino)));
 
-        Map<String, Object> resposta = restClient.post()
-                .uri(BASE_URL + "/" + modo.getPerfilOrs())
-                .header("Authorization", apiKey)
-                .header("Content-Type", "application/json")
-                .body(body)
-                .retrieve()
-                .body(Map.class);
+        Map<String, Object> resposta;
+        try {
+            resposta = restClient.post()
+                    .uri(BASE_URL + "/" + modo.getPerfilOrs())
+                    .header("Authorization", apiKey)
+                    .header("Content-Type", "application/json")
+                    .body(body)
+                    .retrieve()
+                    .body(Map.class);
+        } catch (RestClientException ex) {
+            throw new ServicoExternoIndisponivelException(
+                    "Não foi possível calcular a rota no momento. Tente novamente mais tarde.", ex);
+        }
 
         List<Map<String, Object>> routes = resposta == null
                 ? null
                 : (List<Map<String, Object>>) resposta.get("routes");
 
         if (routes == null || routes.isEmpty()) {
-            throw new RuntimeException("OpenRouteService não retornou nenhuma rota");
+            throw new ServicoExternoIndisponivelException(
+                    "Não foi possível calcular a rota para o trajeto informado.");
         }
 
         Map<String, Object> summary = (Map<String, Object>) routes.get(0).get("summary");

@@ -28,41 +28,25 @@ public class HistoricoController {
     
     @GetMapping("/todos")
     public ResponseEntity<?> listarTodos(){
-        try {
-            List<Historico> historicos = historicoService.listarTodos();
-            return ResponseEntity.ok(historicos);
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao listar históricos.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<Historico> historicos = historicoService.listarTodos();
+        return ResponseEntity.ok(historicos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
-        try {
-            Historico historico = historicoService.buscarPorId(id);
-            return ResponseEntity.ok(historico);
-        } catch (Exception ex){
-            return new ResponseEntity<>("Erro ao buscar histórico por id.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Historico historico = historicoService.buscarPorId(id);
+        return ResponseEntity.ok(historico);
     }
 
     @PostMapping
     public ResponseEntity<?> criar(@RequestParam Long usuarioId, @RequestParam Long lixeiraId, @RequestParam TipoEvento tipoEvento){
-        try {
-            historicoService.registrarEvento(usuarioId, lixeiraId, tipoEvento);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Histórico registrado com sucesso!");
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao registrar histórico.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }   
+        historicoService.registrarEvento(usuarioId, lixeiraId, tipoEvento);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Histórico registrado com sucesso!");
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluir(@PathVariable Long id){
-        try {
-            historicoService.excluir(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Histórico registrado com sucesso!");
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao excluir histórico.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        historicoService.excluir(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Histórico excluído com sucesso!");
     }
 }

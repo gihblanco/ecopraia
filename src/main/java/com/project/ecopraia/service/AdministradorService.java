@@ -8,6 +8,8 @@ import com.project.ecopraia.entity.dtos.admin.AtualizarAdministradorDTO;
 import com.project.ecopraia.entity.dtos.admin.AtualizarSenhaAdministradorDTO;
 import com.project.ecopraia.entity.dtos.admin.CriarAdministradorDTO;
 import com.project.ecopraia.entity.enums.Role;
+import com.project.ecopraia.exception.RecursoJaExisteException;
+import com.project.ecopraia.exception.RecursoNaoEncontradoException;
 import com.project.ecopraia.repository.AdministradorRepository;
 
 @Service
@@ -22,13 +24,13 @@ public class AdministradorService {
 
     public Administrador buscarPorId(Long id) {
         return administradorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Administrador não encontrado"));
     }
 
     public Administrador criar(CriarAdministradorDTO dto) {
 
         if (administradorRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new RecursoJaExisteException("Este e-mail já está cadastrado");
         }
 
         Administrador administrador = new Administrador();
@@ -49,7 +51,7 @@ public class AdministradorService {
         Administrador administrador = buscarPorId(id);
 
         if (administradorRepository.existsByEmailAndIdNot(dto.getEmail(), id)) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new RecursoJaExisteException("Este e-mail já está cadastrado");
         }
 
         administrador.setNome(dto.getNome());
@@ -67,6 +69,9 @@ public class AdministradorService {
     }
 
     public void excluir(Long id) {
+        if (!administradorRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Administrador não encontrado");
+        }
         administradorRepository.deleteById(id);
     }
 }

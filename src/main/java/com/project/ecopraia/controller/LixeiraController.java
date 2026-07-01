@@ -35,76 +35,48 @@ public class LixeiraController {
 
     @GetMapping("/todos")
     public ResponseEntity<?> listarTodos(){
-        try {
-            List<Lixeira> lixeiras = lixeiraService.listarTodos();
-            return ResponseEntity.ok(lixeiras);
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao buscar lixeiras", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<Lixeira> lixeiras = lixeiraService.listarTodos();
+        return ResponseEntity.ok(lixeiras);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
-        try {
-            Lixeira lixeira = lixeiraService.buscarPorId(id);
-            return ResponseEntity.ok(lixeira);
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao buscar lixeira por id.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Lixeira lixeira = lixeiraService.buscarPorId(id);
+        return ResponseEntity.ok(lixeira);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> criar(@Valid @RequestBody CriarLixeiraDTO dto){
-        try {
-            lixeiraService.criar(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Lixeira criada com sucesso!");
-        } catch(Exception ex){
-            return new ResponseEntity<>("Erro ao criar lixeira.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        lixeiraService.criar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Lixeira criada com sucesso!");
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody AtualizarLixeiraDTO dto){
-        try {
-            lixeiraService.atualizar(id, dto);
-            return ResponseEntity.status(HttpStatus.OK).body("Lixeira atualizada com sucesso!");
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao atualizar lixeira.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        lixeiraService.atualizar(id, dto);
+        return ResponseEntity.status(HttpStatus.OK).body("Lixeira atualizada com sucesso!");
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> excluir(@PathVariable Long id){
-        try {
-            lixeiraService.deletar(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Lixeira excluída com sucesso!");
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao excluir lixeira.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        lixeiraService.deletar(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Lixeira excluída com sucesso!");
     }
 
     @GetMapping("/{id}/distancia")
     public ResponseEntity<?> distancia(@PathVariable Long id,
                                        @RequestParam double lat,
                                        @RequestParam double lng){
-        try {
-            return ResponseEntity.ok(lixeiraService.calcularDistancia(id, lat, lng));
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao calcular distância.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return ResponseEntity.ok(lixeiraService.calcularDistancia(id, lat, lng));
     }
 
     @GetMapping("/proximas")
     public ResponseEntity<?> proximas(@RequestParam double lat,
                                       @RequestParam double lng){
-        try {
-            return ResponseEntity.ok(lixeiraService.listarPorProximidade(lat, lng));
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao listar lixeiras próximas.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return ResponseEntity.ok(lixeiraService.listarPorProximidade(lat, lng));
     }
 
     @GetMapping("/{id}/rota")
@@ -112,10 +84,6 @@ public class LixeiraController {
                                   @RequestParam double lat,
                                   @RequestParam double lng,
                                   @RequestParam(defaultValue = "A_PE") ModoDeslocamento modo){
-        try {
-            return ResponseEntity.ok(lixeiraService.calcularRota(id, lat, lng, modo));
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao calcular rota.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return ResponseEntity.ok(lixeiraService.calcularRota(id, lat, lng, modo));
     }
 }

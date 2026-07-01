@@ -35,12 +35,8 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
-        try {
-            Usuario usuario = usuarioService.buscarPorId(id);
-            return ResponseEntity.ok(usuario);
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao buscar usuário por id.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Usuario usuario = usuarioService.buscarPorId(id);
+        return ResponseEntity.ok(usuario);
     }
 
     @GetMapping("/me")
@@ -53,41 +49,25 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<?> criar(@Valid @RequestBody CriarUsuarioDTO dto) {
-        try {
-            usuarioService.criar(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso!");
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao criar usuário.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        usuarioService.criar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso!");
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @Valid @RequestBody AtualizarUsuarioDTO dto) {
-        try {
-            usuarioService.atualizar(id, dto);
-            return ResponseEntity.status(HttpStatus.OK).body("Usuário atualizado com sucesso!");
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao atualizar usuário.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        usuarioService.atualizar(id, dto);
+        return ResponseEntity.status(HttpStatus.OK).body("Usuário atualizado com sucesso!");
     }
 
     @PatchMapping("/{id}/senha")
     public ResponseEntity<?> atualizarSenha(@PathVariable Long id, @Valid @RequestBody AtualizarSenhaUsuarioDTO dto) {
-        try {
-            usuarioService.atualizarSenha(id, dto);
-            return ResponseEntity.status(HttpStatus.OK).body("Senha alterado com sucesso!");
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao atualizar senha.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        usuarioService.atualizarSenha(id, dto);
+        return ResponseEntity.status(HttpStatus.OK).body("Senha alterada com sucesso!");
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluir(@PathVariable Long id) {
-        try {
-            usuarioService.excluir(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Usuário excluído com sucesso!");
-        } catch (Exception ex) {
-            return new ResponseEntity<>("Erro ao atualizar senha.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        usuarioService.excluir(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Usuário excluído com sucesso!");
     }
 }

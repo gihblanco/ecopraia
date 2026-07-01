@@ -9,6 +9,7 @@ import com.project.ecopraia.entity.Historico;
 import com.project.ecopraia.entity.Lixeira;
 import com.project.ecopraia.entity.Usuario;
 import com.project.ecopraia.entity.enums.TipoEvento;
+import com.project.ecopraia.exception.RecursoNaoEncontradoException;
 import com.project.ecopraia.repository.HistoricoRepository;
 import com.project.ecopraia.repository.LixeiraRepository;
 import com.project.ecopraia.repository.UsuarioRepository;
@@ -34,14 +35,15 @@ public class HistoricoService {
     }
 
     public Historico buscarPorId(Long id) {
-        return historicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Historico não encontrado"));
+        return historicoRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Histórico não encontrado"));
     }
 
     public Historico registrarEvento(Long usuarioId, Long lixeiraId, TipoEvento tipoEvento) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
         Lixeira lixeira = lixeiraRepository.findById(lixeiraId)
-                .orElseThrow(() -> new RuntimeException("Lixeira não encontrada"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Lixeira não encontrada"));
 
         Historico historico = new Historico();
 
@@ -54,6 +56,9 @@ public class HistoricoService {
     }
 
     public void excluir(Long id) {
+        if (!historicoRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Histórico não encontrado");
+        }
         historicoRepository.deleteById(id);
     }
 }
