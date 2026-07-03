@@ -29,6 +29,19 @@ public class CriarAdministradorDTO {
     @NotBlank(message = "O cargo é obrigatório")
     private String cargo;
 
+    public CriarAdministradorDTO(String nome, String email, String senha, String cpf, String instituicao, String cargo) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.cpf = cpf;
+        this.instituicao = instituicao;
+        this.cargo = cargo;
+    }
+
+    public CriarAdministradorDTO() {
+        
+    }
+
     public String getNome() {
         return nome;
     }
@@ -75,5 +88,5 @@ public class CriarAdministradorDTO {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
-    }
+    }    
 }

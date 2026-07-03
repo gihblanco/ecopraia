@@ -20,6 +20,13 @@ public class AtualizarAdministradorDTO {
     @NotBlank(message = "O cargo é obrigatório")
     private String cargo;
 
+    public AtualizarAdministradorDTO( String nome, String email, String instituicao, String cargo) {
+        this.nome = nome;
+        this.email = email;
+        this.instituicao = instituicao;
+        this.cargo = cargo;
+    }
+
     public String getNome() {
         return nome;
     }

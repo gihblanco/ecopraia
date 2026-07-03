@@ -108,7 +108,7 @@ public class LixeiraService {
         Usuario usuario = getUsuarioAutenticado();
 
         Lixeira lixeira = buscarPorId(id);
-
+        
         historicoService.registrarEvento(
                 usuario.getId(),
                 id,

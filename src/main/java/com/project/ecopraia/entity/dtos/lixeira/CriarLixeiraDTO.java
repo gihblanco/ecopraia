@@ -5,7 +5,7 @@ import java.util.List;
 import jakarta.validation.constraints.NotNull;
 
 public class CriarLixeiraDTO {
-    
+
     @NotNull(message = "Latitude obrigatória")
     private Double latitude;
 
@@ -38,5 +38,12 @@ public class CriarLixeiraDTO {
     public void setInformativosTiposIds(List<Long> informativosTiposIds) {
         this.informativosTiposIds = informativosTiposIds;
     }
-    
+
+    public CriarLixeiraDTO(@NotNull(message = "Latitude obrigatória") Double latitude,
+            @NotNull(message = "Longitude obrigatória") Double longitude,
+            @NotNull(message = "Informativo obrigatório") List<Long> informativosTiposIds) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.informativosTiposIds = informativosTiposIds;
+    }
 }
