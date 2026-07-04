@@ -59,9 +59,10 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK).body("Usuário atualizado com sucesso!");
     }
 
-    @PatchMapping("/{id}/senha")
-    public ResponseEntity<?> atualizarSenha(@PathVariable Long id, @Valid @RequestBody AtualizarSenhaUsuarioDTO dto) {
-        usuarioService.atualizarSenha(id, dto);
+    @PatchMapping("/me/senha")
+    public ResponseEntity<?> atualizarSenha(Authentication authentication, @Valid @RequestBody AtualizarSenhaUsuarioDTO dto) {
+        Usuario usuarioAutenticado = (Usuario) authentication.getPrincipal();
+        usuarioService.atualizarSenha(usuarioAutenticado.getId(), dto);
         return ResponseEntity.status(HttpStatus.OK).body("Senha alterada com sucesso!");
     }
 
